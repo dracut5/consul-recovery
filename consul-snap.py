@@ -7,7 +7,7 @@ import os
 import boto3
 
 
-def mainFunc(json_input, context):
+def mainFunc(event, context):
 
     consulAddrPort = os.environ['CONSUL_ADDRESS'] if 'CONSUL_ADDRESS' in os.environ.keys() else "127.0.0.1:8500"
     consulSnapUrl = 'http://{}/v1/snapshot'.format(consulAddrPort)
