@@ -11,12 +11,16 @@ consulSnapUrl = 'http://{}/v1/snapshot'.format(consulAddrPort)
 bucketS3 = 'terraform-signnow-dev-remote-states'
 KeyS3 = 'backup/consul-cl01/'+ datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S") + '_snapshot.tar.gz'
 
-response = urlopen(consulSnapUrl)
-snapArchive = response.read()
 
+def mainFunc(json_input, context):
+    response = urlopen(consulSnapUrl)
+    snapArchive = response.read()
 ###Use env vars for AWS credentials 
-s3 = boto3.resource('s3')
-s3.Bucket(bucketS3).put_object(Key=KeyS3, Body=snapArchive)
+    s3 = boto3.resource('s3')
+    s3.Bucket(bucketS3).put_object(Key=KeyS3, Body=snapArchive)
 
+    return bucketS3 + '/' + KeyS3
 
+if __name__ == '__main__':
+    mainFunc('input', 'context')
 
