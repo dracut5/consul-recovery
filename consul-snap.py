@@ -7,6 +7,18 @@ import os
 import boto3
 
 
+def saveCopies():
+
+    consulAddrPort = os.environ['CONSUL_ADDRESS']
+    bucketS3 = os.environ['BUCKET']
+    bucketS3path = os.environ['BUCKET_PATH'] if 'BUCKET_PATH' in os.environ.keys() else ''
+    n = 10
+    s3 = boto3.resource('s3')
+    bucket = s3.Bucket(bucketS3)
+    for obj in bucket.objects.all():
+          print(obj.key)
+   
+
 def mainFunc(event, context):
 
     consulAddrPort = os.environ['CONSUL_ADDRESS']
@@ -23,6 +35,9 @@ def mainFunc(event, context):
 
     return bucketS3 + '/' + KeyS3
 
-if __name__ == '__main__':
-    mainFunc('input', 'context')
 
+
+if __name__ == '__main__':
+    #result = mainFunc('input', 'context')
+    #print(result) 
+    saveCopies()
