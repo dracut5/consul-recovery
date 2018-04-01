@@ -8,6 +8,7 @@ import boto3
 
 
 def saveCopies():
+    keys=[]
 
     consulAddrPort = os.environ['CONSUL_ADDRESS']
     bucketS3 = os.environ['BUCKET']
@@ -15,8 +16,15 @@ def saveCopies():
     n = 10
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(bucketS3)
-    for obj in bucket.objects.all():
-          print(obj.key)
+    for obj in bucket.objects.filter(Prefix='test/'):
+       keys.append(obj.key)
+    #print(keys)
+    keys.sort()
+    keys.pop(0)
+    print("Sorted")
+    print(keys) 
+    s3.Object(bucketS3, keys[0]).delete()
+      
    
 
 def mainFunc(event, context):
