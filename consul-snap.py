@@ -23,12 +23,13 @@ def removeCopies(keepCopies, s3, bucketS3, prefix):
         s3.Object(bucketS3, delFile).delete()
         copies -= 1
 
+
 def mainFunc(event, context):
 
     consulAddrPort = os.environ['CONSUL_ADDRESS']
     bucketS3 = os.environ['BUCKET']
     bucketS3path = os.environ['BUCKET_PATH'] if 'BUCKET_PATH' in os.environ.keys() else ''
-    keepCopies = os.environ['COPIES'] if 'COPIES' in os.environ.keys() else 10   
+    keepCopies = int(os.environ['COPIES']) if 'COPIES' in os.environ.keys() else 50   
 
     consulSnapUrl = 'http://{}/v1/snapshot'.format(consulAddrPort)
     KeyS3 = bucketS3path + datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S") + '_snapshot.tar.gz'
@@ -41,9 +42,7 @@ def mainFunc(event, context):
 
     removeCopies(keepCopies, s3, bucketS3, bucketS3path)
 
-
     return bucketS3 + '/' + KeyS3
-
 
 
 if __name__ == '__main__':
