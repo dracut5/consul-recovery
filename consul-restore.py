@@ -48,4 +48,6 @@ elif action == "restore":
     parser.add_argument("--snapshot",required=True)
     args = parser.parse_args()
     restore(args.consul_address, args.bucket, args.snapshot, args.profile)
-
+elif action == "help":
+    print("List example:\n./consul-restore.py list --bucket_path consul-backup/snapshot-dir --bucket das-backup-20180514124105088500000001 --profile dev")
+    print("Restore example:\n./consul-restore.py restore --consul_address localhost:8500 --snapshot consul-backup/snapshot-dir/snapshot-2018-07-18_00-00-59.tgz --bucket das-backup-20180514124105088500000001 --profile dev")
